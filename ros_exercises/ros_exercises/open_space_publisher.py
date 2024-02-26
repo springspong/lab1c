@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from std_msgs.msg import Float32
+from custom_msgs import OpenSpace
 
 
 class OpenSpacePublisher(Node):
@@ -10,7 +11,7 @@ class OpenSpacePublisher(Node):
         super().__init__('open_space_publisher')
         self.subscription = self.create_subscription(
             LaserScan,
-            'fake_scan',
+            'open_space',
             self.scan_callback,
             10)
         self.subscription  # prevent unused variable warning
