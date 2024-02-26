@@ -1,19 +1,22 @@
+#!/usr/bin/env python
+
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32
 import random
-import time
 
 class SimplePublisher(Node):
     def __init__(self):
         super().__init__('simple_publisher')
         self.publisher_ = self.create_publisher(Float32, 'my_random_float', 10)
-        self.timer_ = self.create_timer(1.0/20.0, self.publish_random_number)
+        self.timer = self.create_timer(0.05, self.publish_random_float)
 
-    def publish_random_number(self):
+    def publish_random_float(self):
+        random_float = random.uniform(0, 10.0)
         msg = Float32()
-        msg.data = random.uniform(0, 10)
+        msg.data = random_float
         self.publisher_.publish(msg)
+        self.get_logger().info('Publishing random float: %f' % random_float)
 
 def main(args=None):
     rclpy.init(args=args)
