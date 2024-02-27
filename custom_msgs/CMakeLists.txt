@@ -19,7 +19,9 @@ endif()
 find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
-# find_package(<dependency> REQUIRED)
+#find_package(rospy REQUIRED)
+#find_package(sensor_msgs REQUIRED)
+#find_package(std_msgs REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -32,16 +34,14 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+# Uncomment the following two lines if the package has dependencies not listed in
 find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
-# Uncomment the following two lines if the package has dependencies not listed in
-# find_package(ament_cmake REQUIRED)
-# find_package(rosidl_default_generators REQUIRED)
-
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "OpenSpace.msg"
+  "msgs/OpenSpace.msg"
 )
 
+#ament_export_dependencies(rosidl_default_runtime)
 
 ament_package()

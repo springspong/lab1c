@@ -1,10 +1,9 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
-from std_msgs.msg import Header
+from std_msgs.msg import Header, Float32
 import random
 import math
-import time
 
 
 class FakeScanPublisher(Node):
@@ -12,6 +11,7 @@ class FakeScanPublisher(Node):
     def __init__(self):
         super().__init__('fake_scan_publisher')
         self.publisher_ = self.create_publisher(LaserScan, 'fake_scan', 10)
+        self.range_test_ = self.create_publisher(Float32, 'range_test', 10)
         timer_period = 0.05  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
@@ -29,11 +29,13 @@ class FakeScanPublisher(Node):
         scan.range_max = 10.0
 
         # Generate random ranges
-        num_readings = int((scan.angle_max - scan.angle_min) / scan.angle_increment) + 1
+        num_readings = int(abs((scan.angle_max - scan.angle_min)) / scan.angle_increment + 1)
         scan.ranges = [random.uniform(scan.range_min, scan.range_max) for _ in range(num_readings)]
 
         self.publisher_.publish(scan)
-        self.get_logger().info('Published fake laser scan data.')
+        range_length = Float32()
+        range_length.data = float(len(scan.ranges))
+        self.range_test_.publish(range_length)
 
 def main(args=None):
     rclpy.init(args=args)
